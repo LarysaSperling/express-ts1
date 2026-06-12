@@ -1,0 +1,44 @@
+Добавьте 6 новых эндпоинтов
+
+Тело запроса (body) - если есть
+Параметры маршрута (params) - если есть
+Query параметры - если есть
+Тело ответа (response)
+
+PUT /api/users/:id - полное обновление пользователя
+Body (запрос): UpdateUserDto (name, email - оба обязательны)
+Params: { id: string }
+Response: ApiResponse<User>
+Статус 404 если пользователь не найден
+
+PATCH /api/users/:id - частичное обновление пользователя
+Body (запрос): PartialUpdateUserDto (name?, email? - оба опциональны)
+Params: { id: string }
+Response: ApiResponse<User>
+
+DELETE /api/users/:id - удаление пользователя
+Params: { id: string }
+Response: ApiResponse<{ deletedId: number }> (в data положить удаленный id)
+
+POST /api/users/:id/change-email - смена email
+Body (запрос): ChangeEmailDto (newEmail: string, confirmEmail: string)
+Params: { id: string }
+Response: ApiResponse<User>
+Валидация: newEmail должен совпадать с confirmEmail и быть уникальным
+
+*POST /api/auth/register - регистрация нового пользователя
+Body (запрос): RegisterDto (name, email, password, confirmPassword)
+Response: ApiResponse<{ user: User; token: string }>
+Валидация: password min 6 символов, password === confirmPassword
+
+*POST /api/auth/login - вход пользователя
+Body (запрос): LoginDto (email, password)
+Response: ApiResponse<{ user: User; token: string }>
+Валидация: проверять существует ли пользователь с таким email и password
+
+Никакого any
+Все body, params, query типизированы
+Все ответы типизированы через ApiResponse<T>
+Валидация всех входных данных
+Корректные HTTP статусы
+Код компилируется без ошибок TypeScript
